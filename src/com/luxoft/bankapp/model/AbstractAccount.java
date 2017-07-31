@@ -2,6 +2,7 @@ package com.luxoft.bankapp.model;
 
 public abstract class AbstractAccount implements Account {
 	protected float balance;
+	protected String accountName;
 
 	@Override
 	public void printReport() {
@@ -22,5 +23,18 @@ public abstract class AbstractAccount implements Account {
 		return balance;
 	}
 
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
 
+		AbstractAccount that = (AbstractAccount) o;
+
+		return getAccountName() != null ? getAccountName().equals(that.getAccountName()) : that.getAccountName() == null;
+	}
+
+	@Override
+	public int hashCode() {
+		return getAccountName() != null ? getAccountName().hashCode() : 0;
+	}
 }

@@ -108,4 +108,22 @@ public class Client implements Report {
 	public String getClientSalutation() {
 		return gender.getSalutation();
 	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+
+		Client client = (Client) o;
+
+		if (name != null ? !name.equals(client.name) : client.name != null) return false;
+		return gender == client.gender;
+	}
+
+	@Override
+	public int hashCode() {
+		int result = name != null ? name.hashCode() : 0;
+		result = 31 * result + (gender != null ? gender.hashCode() : 0);
+		return result;
+	}
 }
