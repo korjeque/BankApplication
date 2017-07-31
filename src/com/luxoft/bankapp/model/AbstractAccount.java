@@ -37,4 +37,13 @@ public abstract class AbstractAccount implements Account {
 	public int hashCode() {
 		return getAccountName() != null ? getAccountName().hashCode() : 0;
 	}
+
+    @Override
+    public String toString() {
+	    return new StringBuilder()
+                .append(accountName)
+                .append(" with balance ")
+                .append(balance)
+                .toString();
+    }
 }

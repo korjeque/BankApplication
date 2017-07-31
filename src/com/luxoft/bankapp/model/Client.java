@@ -126,4 +126,28 @@ public class Client implements Report {
 		result = 31 * result + (gender != null ? gender.hashCode() : 0);
 		return result;
 	}
+
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder()
+				.append(gender)
+				.append(" ")
+				.append(name)
+				.append("\n Initial balance: ")
+				.append(initialBalance)
+				.append("\n Initial overdraft: ")
+				.append(initialOverdraft)
+				.append("\n Active account: ")
+				.append(activeAccount)
+				.append("List of accounts:");
+
+		for (Account a:accounts) {
+			sb
+				.append("\n")
+				.append(a);
+
+		}
+
+		return sb.toString();
+	}
 }
