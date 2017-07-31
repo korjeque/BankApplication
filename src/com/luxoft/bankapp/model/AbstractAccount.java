@@ -46,4 +46,9 @@ public abstract class AbstractAccount implements Account {
                 .append(balance)
                 .toString();
     }
+
+    @Override
+    public int decimalValue() {
+	    return Math.round(getBalance());
+    }
 }

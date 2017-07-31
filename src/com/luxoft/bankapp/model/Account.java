@@ -7,6 +7,8 @@ public interface Account extends Report {
 
 	public float getBalance();
 
+	public int decimalValue();
+
 	public void deposit(float x) throws IllegalArgumentException;
 
 	public void withdraw(float x) throws NotEnoughFundsException;
