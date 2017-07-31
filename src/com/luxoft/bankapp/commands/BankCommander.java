@@ -11,10 +11,13 @@ public class BankCommander {
     public static Client currentClient;
 
     static Command[] commands = {
-            //new FindClientCommand(), // 1
-            //new GetAccountCommand(), // 2
-            // etc.
-            new Command() { // 7 - Exit Command
+            new FindClientCommand(),
+            new GetAccountCommand(),
+            new DepositCommand(),
+            new WithdrawCommand(),
+            new TransferCommand(),
+            new AddClientCommand(),
+            new Command() {
                 public void execute() {
                     System.exit(0);
                 }
@@ -31,13 +34,11 @@ public class BankCommander {
 
         while (true) {
             for (int i = 0; i < commands.length; i++) {
-                // show menu
                 System.out.print(i + ") ");
                 commands[i].printCommandInfo();
             }
             String commandString = s.nextLine();
-            int command = 0;
-            // initialize command with commandString
+            int command = Integer.parseInt(commandString);
             commands[command].execute();
         }
     }
