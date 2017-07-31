@@ -1,48 +1,54 @@
 package com.luxoft.bankapp.model;
 
+import com.luxoft.bankapp.exceptions.ClientExistsException;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import com.luxoft.bankapp.exceptions.ClientExistsException;
-
 public class Bank implements Report {
 
-	private List<Client> clients = new ArrayList<Client>();
+    private String name;
 
-	public List<Client> getClients() {
-		return clients;
-	}
+    private List<Client> clients = new ArrayList<Client>();
 
-	public void addClient(Client c) throws ClientExistsException {
-		if (!checkIfClientExists(c)) {
-			clients.add(c);
-		} else {
-			throw new ClientExistsException();
-		}
-	}
+    public Bank() {
+    }
 
-	public void removeClient(Client c) {
-		clients.remove(c);
-	}
+    public Bank(String name) {
+        this.name = name;
+    }
 
-	@Override
-	public void printReport() {
-		for (Client c : clients) {
-			c.printReport();
-		}
+    public List<Client> getClients() {
+        return clients;
+    }
 
-	}
+    public void addClient(Client c) throws ClientExistsException {
+        if (!checkIfClientExists(c)) {
+            clients.add(c);
+        } else {
+            throw new ClientExistsException();
+        }
+    }
 
-	public boolean checkIfClientExists(Client client) {
-		for (Client c : clients) {
-			if (c.getName().equals(client.getName())) {
-				return true;
-			}
-		}
-		return false;
-	}
+    public void removeClient(Client c) {
+        clients.remove(c);
+    }
 
-	public Bank() {
-	}
+    @Override
+    public void printReport() {
+        for (Client c : clients) {
+            c.printReport();
+        }
+
+    }
+
+    public boolean checkIfClientExists(Client client) {
+        for (Client c : clients) {
+            if (c.getName().equals(client.getName())) {
+                return true;
+            }
+        }
+        return false;
+    }
 
 }
