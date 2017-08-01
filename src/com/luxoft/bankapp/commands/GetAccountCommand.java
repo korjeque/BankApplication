@@ -2,8 +2,6 @@ package com.luxoft.bankapp.commands;
 
 import com.luxoft.bankapp.model.Account;
 
-import java.util.List;
-
 public class GetAccountCommand implements Command {
 
     @Override
