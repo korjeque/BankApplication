@@ -1,8 +1,8 @@
 package com.luxoft.bankapp.commands;
 
+import com.luxoft.bankapp.exceptions.ClientNotExistsException;
 import com.luxoft.bankapp.exceptions.NotEnoughFundsException;
 import com.luxoft.bankapp.model.Client;
-import com.luxoft.bankapp.commands.FindClientCommand;
 
 import java.util.Scanner;
 
@@ -17,7 +17,12 @@ public class TransferCommand implements Command {
 
         //TODO replace with method from client class
         //TODO add validation
-        Client recieveClient = FindClientCommand.searchClient(inputData);
+        Client recieveClient = null;
+        try {
+            recieveClient = BankCommander.currentBank.getClient(inputData);
+        } catch (ClientNotExistsException e) {
+            e.printStackTrace();
+        }
 
         System.out.println("How much you want to transfer?");
         String transferAmmount = s.nextLine();
@@ -27,7 +32,7 @@ public class TransferCommand implements Command {
             BankCommander.currentClient.withdraw(Float.parseFloat(transferAmmount));
             recieveClient.deposit(Float.parseFloat(transferAmmount));
         } catch (NotEnoughFundsException e) {
-
+            e.printStackTrace();
         }
 
     }

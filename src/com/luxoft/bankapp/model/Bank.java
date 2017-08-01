@@ -1,15 +1,16 @@
 package com.luxoft.bankapp.model;
 
 import com.luxoft.bankapp.exceptions.ClientExistsException;
+import com.luxoft.bankapp.exceptions.ClientNotExistsException;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 public class Bank implements Report {
 
     private String name;
 
-    private List<Client> clients = new ArrayList<Client>();
+    private Set<Client> clients = new HashSet<Client>();
 
     public Bank() {
     }
@@ -18,7 +19,7 @@ public class Bank implements Report {
         this.name = name;
     }
 
-    public List<Client> getClients() {
+    public Set<Client> getClients() {
         return clients;
     }
 
@@ -34,12 +35,20 @@ public class Bank implements Report {
         clients.remove(c);
     }
 
+    public Client getClient(String searchedClient) throws ClientNotExistsException {
+        for(Client c : clients) {
+            if (c.getName().equals(searchedClient)) {
+                return c;
+            }
+        }
+        throw new ClientNotExistsException();
+    }
+
     @Override
     public void printReport() {
         for (Client c : clients) {
             c.printReport();
         }
-
     }
 
     public boolean checkIfClientExists(Client client) {

@@ -1,5 +1,6 @@
 package com.luxoft.bankapp.commands;
 
+import com.luxoft.bankapp.exceptions.ClientExistsException;
 import com.luxoft.bankapp.model.Client;
 
 import java.util.Scanner;
@@ -27,7 +28,13 @@ public class AddClientCommand implements Command {
         if (inputData.trim().equals("F"))
             clientGender = Client.Gender.FEMALE;
 
-        BankCommander.currentClient = new Client(clientName, clientInitialOverdraft, clientGender);
+        try {
+            Client client = new Client(clientName, clientInitialOverdraft, clientGender);
+            BankCommander.currentBank.addClient(client);
+            BankCommander.currentClient = client;
+        } catch (ClientExistsException e) {
+            e.printStackTrace();
+        }
 
     }
 
