@@ -13,6 +13,7 @@ public class Client implements Report {
 	private float initialOverdraft;
 	private float initialBalance;
 	private Gender gender;
+	private String city;
 
 	public enum Gender {
 		MALE("Mr"), FEMALE("Ms");
@@ -62,7 +63,6 @@ public class Client implements Report {
 
 	public float getBalance() {
 		return activeAccount.getBalance();
-
 	}
 
 	public Set<Account> getAccounts() {
@@ -71,6 +71,14 @@ public class Client implements Report {
 
 	public void addAccount(Account account) {
 		accounts.add(account);
+	}
+
+	public String getCity() {
+		return city;
+	}
+
+	public void setCity(String city) {
+		this.city = city;
 	}
 
 	public void deposit(float x) throws IllegalArgumentException {
