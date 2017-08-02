@@ -3,7 +3,9 @@ package com.luxoft.bankapp.model;
 import com.luxoft.bankapp.exceptions.ClientExistsException;
 import com.luxoft.bankapp.exceptions.ClientNotExistsException;
 
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 public class Bank implements Report {
@@ -11,6 +13,8 @@ public class Bank implements Report {
     private String name;
 
     private Set<Client> clients = new HashSet<Client>();
+
+    private Map<String, Client> clientMap = new HashMap<>();
 
     public Bank() {
     }
@@ -26,6 +30,7 @@ public class Bank implements Report {
     public void addClient(Client c) throws ClientExistsException {
         if (!checkIfClientExists(c)) {
             clients.add(c);
+            clientMap.put(c.getName(), c);
         } else {
             throw new ClientExistsException();
         }
@@ -36,12 +41,11 @@ public class Bank implements Report {
     }
 
     public Client getClient(String searchedClient) throws ClientNotExistsException {
-        for(Client c : clients) {
-            if (c.getName().equals(searchedClient)) {
-                return c;
-            }
-        }
-        throw new ClientNotExistsException();
+        Client c = clientMap.get(searchedClient);
+        if (c != null)
+            return c;
+        else
+            throw new ClientNotExistsException();
     }
 
     @Override
