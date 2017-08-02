@@ -1,6 +1,7 @@
 package com.luxoft.bankapp.commands;
 
 import com.luxoft.bankapp.exceptions.ClientExistsException;
+import com.luxoft.bankapp.model.CheckingAccount;
 import com.luxoft.bankapp.model.Client;
 
 import java.util.Scanner;
@@ -32,6 +33,9 @@ public class AddClientCommand implements Command {
             Client client = new Client(clientName, clientInitialOverdraft, clientGender);
             BankCommander.currentBank.addClient(client);
             BankCommander.currentClient = client;
+            CheckingAccount account = new CheckingAccount(1000);
+            client.addAccount(account);
+            client.setActiveAccount(account);
         } catch (ClientExistsException e) {
             e.printStackTrace();
         }

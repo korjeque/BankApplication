@@ -22,8 +22,8 @@ public class BankReport {
         int numberOfAccounts = 0;
         Iterator<Client> clientIterator = bank.getClients().iterator();
         while (clientIterator.hasNext()) {
-            clientIterator.next();
-            Iterator<Account> accountIterator = clientIterator.next().getAccounts().iterator();
+            Client client = clientIterator.next();
+            Iterator<Account> accountIterator = client.getAccounts().iterator();
             while (accountIterator.hasNext()) {
                 accountIterator.next();
                 numberOfAccounts++;
@@ -38,8 +38,10 @@ public class BankReport {
             if (c1.getBalance() < c2.getBalance()) return -1;
             return 0;
         });
+        clients.addAll(bank.getClients());
+        System.out.println("Sorted client list: ");
         for (Client c : clients) {
-            System.out.println(c);
+            System.out.println(c.getName());
         }
     }
 
@@ -55,6 +57,7 @@ public class BankReport {
                 }
             }
         }
+        System.out.println("Total bank credit summ: " + bankCreditSum);
     }
 
     public void getClientsByCity(Bank bank) {
@@ -69,6 +72,7 @@ public class BankReport {
             map.put(client.getCity(), clientList);
         }
 
+        System.out.println("Clients grouped by city: ");
         Iterator<Map.Entry<String, List<Client>>> entryIterator = map.entrySet().iterator();
         while (entryIterator.hasNext()) {
             Map.Entry<String, List<Client>> entry = entryIterator.next();
