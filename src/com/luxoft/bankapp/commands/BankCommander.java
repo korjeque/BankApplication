@@ -18,6 +18,7 @@ public class BankCommander {
             new TransferCommand(),
             new AddClientCommand(),
             new BankReportCommand(),
+            new BankFeedCommand(),
             new Command() {
                 public void execute() {
                     System.exit(0);
