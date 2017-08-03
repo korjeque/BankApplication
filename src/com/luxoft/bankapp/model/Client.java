@@ -130,7 +130,7 @@ public class Client implements Report {
 
     public void parseFeed(Map<String, String> feed) {
 
-        String accountType = feed.get("accounttype");
+        String accountType = feed.get("accountType");
         Account acc = getAccount(accountType);
 
         this.setCity(feed.get("city"));

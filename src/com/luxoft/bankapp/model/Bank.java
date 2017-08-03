@@ -73,7 +73,8 @@ public class Bank implements Report {
             client = getClient(name);
         } catch (ClientNotExistsException e) {
             try {
-                addClient(new Client(name));
+                client = new Client(name);
+                addClient(client);
             } catch (ClientExistsException e1) {
                 e1.printStackTrace();
             }

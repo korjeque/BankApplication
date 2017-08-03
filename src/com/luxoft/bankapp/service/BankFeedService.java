@@ -27,13 +27,11 @@ public class BankFeedService {
                     String[] prop = clientProps.split("=");
                     clientMap.put(prop[0], prop[1]);
                 }
+                BankCommander.currentBank.parseFeed(clientMap);
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-        BankCommander.currentBank.parseFeed(clientMap);
-
     }
 
 }
