@@ -2,10 +2,13 @@ package com.luxoft.bankapp.model;
 
 import com.luxoft.bankapp.exceptions.OverDraftLimitExceededException;
 
+import java.util.Map;
+
 public class CheckingAccount extends AbstractAccount {
 	private float overdraft;
 
 	public CheckingAccount(float overdraft) throws IllegalArgumentException {
+		accountType = "c";
 		if (overdraft >= 0) {
 			this.overdraft = overdraft;
 		} else {
@@ -29,6 +32,12 @@ public class CheckingAccount extends AbstractAccount {
 			throw new OverDraftLimitExceededException(getAccountName(), balance
 					+ overdraft);
 		}
+	}
+
+	@Override
+	public void parseFeed(Map<String, String> feed) {
+		super.parseFeed(feed);
+		this.overdraft = Float.parseFloat(feed.get("overdraft"));
 	}
 
 	public String getAccountName() {

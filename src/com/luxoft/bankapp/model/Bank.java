@@ -64,4 +64,22 @@ public class Bank implements Report {
         return false;
     }
 
+    public void parseFeed(Map<String, String> feed) {
+
+        String name = feed.get("name");
+
+        Client client = null;
+        try {
+            client = getClient(name);
+        } catch (ClientNotExistsException e) {
+            try {
+                addClient(new Client(name));
+            } catch (ClientExistsException e1) {
+                e1.printStackTrace();
+            }
+        }
+
+        client.parseFeed(feed);
+
+    }
 }

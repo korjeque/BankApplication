@@ -5,6 +5,7 @@ import com.luxoft.bankapp.exceptions.NotEnoughFundsException;
 public class SavingAccount extends AbstractAccount {
 
 	public SavingAccount(float initialBalance) throws IllegalArgumentException {
+		accountType = "s";
 		if (initialBalance >= 0) {
 			balance = initialBalance;
 		} else {

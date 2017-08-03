@@ -1,5 +1,7 @@
 package com.luxoft.bankapp.service;
 
+import com.luxoft.bankapp.commands.BankCommander;
+
 import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
@@ -29,6 +31,9 @@ public class BankFeedService {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        BankCommander.currentBank.parseFeed(clientMap);
+
     }
 
 }

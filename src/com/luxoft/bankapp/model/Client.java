@@ -1,159 +1,201 @@
 package com.luxoft.bankapp.model;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import com.luxoft.bankapp.exceptions.NotEnoughFundsException;
 
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+
 public class Client implements Report {
-	private String name;
-	private Set<Account> accounts = new HashSet<Account>();
-	
-	private Account activeAccount;
-	private float initialOverdraft;
-	private float initialBalance;
-	private Gender gender;
-	private String city;
+    private String name;
+    private Set<Account> accounts = new HashSet<Account>();
 
-	public enum Gender {
-		MALE("Mr"), FEMALE("Ms");
+    private Account activeAccount;
+    private float initialOverdraft;
+    private float initialBalance;
+    private Gender gender;
+    private String city;
 
-		private String prefix;
+    public Client(String name) {
+        this.name = name;
+    }
 
-		String getSalutation() {
-			return prefix;
-		}
+    public Client(String name, float initialOverdraft, Gender gender) {
+        this.name = name;
+        this.initialOverdraft = initialOverdraft;
+        this.gender = gender;
+    }
 
-		Gender(String prefix) {
-			this.prefix = prefix;
-		}
+    public Client(String name, Gender gender) {
+        this(name, 0, gender);
+    }
 
-	}
-	public String getGender() { return gender==Gender.MALE?"m":"f"; }
-	
-	public Client(String name, float initialOverdraft, Gender gender) {
-		this.name = name;
-		this.initialOverdraft = initialOverdraft;
-		this.gender = gender;
-	}
+    public String getGender() {
+        return gender == Gender.MALE ? "m" : "f";
+    }
 
-	public Client(String name, Gender gender) {
-		this(name, 0, gender);
-	}
+    public float getInitialBalance() {
+        return initialBalance;
+    }
 
-	public float getInitialBalance() {
-		return initialBalance;
-	}
+    public void setInitialBalance(float initialBalance) {
+        this.initialBalance = initialBalance;
+    }
 
-	public void setInitialBalance(float initialBalance) {
-		this.initialBalance = initialBalance;
-	}
+    public void setInitialOverdraft(float initialOverdraft) {
+        this.initialOverdraft = initialOverdraft;
+    }
 
-	public void setInitialOverdraft(float initialOverdraft) {
-		this.initialOverdraft = initialOverdraft;
-	}
+    public void setActiveAccount(Account activeAccount) {
+        this.activeAccount = activeAccount;
+    }
 
-	public void setActiveAccount(Account activeAccount) {
-		this.activeAccount = activeAccount;
-	}
+    public String getName() {
+        return this.name;
+    }
 
-	public String getName() {
-		return this.name;
-	}
+    public float getBalance() {
+        return activeAccount.getBalance();
+    }
 
-	public float getBalance() {
-		return activeAccount.getBalance();
-	}
+    public Set<Account> getAccounts() {
+        return accounts;
+    }
 
-	public Set<Account> getAccounts() {
-		return accounts;
-	}
+    private Account getAccount(String accountType) {
+        for (Account acc : accounts) {
+            if (acc.getAccountType().equals(accountType)) {
+                return acc;
+            }
+        }
+        return createAccount(accountType);
+    }
 
-	public void addAccount(Account account) {
-		accounts.add(account);
-	}
+    /**
+     * This method creates account by its type
+     */
+    public Account createAccount(String accountType) {
 
-	public String getCity() {
-		return city;
-	}
+        Account account;
 
-	public void setCity(String city) {
-		this.city = city;
-	}
+        switch (accountType) {
+            case "s": {
+                account = new SavingAccount(initialBalance);
+                break;
+            }
+            case "c": {
+                account = new CheckingAccount(initialOverdraft);
+                break;
+            }
+            default: {
+                throw new IllegalArgumentException("Account type not found " + accountType);
+            }
+        }
 
-	public void deposit(float x) throws IllegalArgumentException {
-		activeAccount.deposit(x);
-	}
+        accounts.add(account);
+        return account;
+    }
 
-	public void withdraw(float x) throws NotEnoughFundsException {
-		activeAccount.withdraw(x);
-	}
+    public void addAccount(Account account) {
+        accounts.add(account);
+    }
 
-	public Account createAccount(String accountType) {
-		switch (accountType) {
-			case "Saving": {
-				return new SavingAccount(initialBalance);
-			}
-			case "Checking": {
-				return new CheckingAccount(initialOverdraft);
-			}
-			default: {
-				return null;
-			}
-		}
-	}
+    public String getCity() {
+        return city;
+    }
 
-	public void printReport() {
-		System.out.println("Name : " + this.getClientSalutation() + " " + name);
-		for (Account a : accounts) {
-			System.out.print(a.getAccountName() + " balance: " + a.getBalance() + " ");
-		}
-		System.out.println();
-	}
+    public void setCity(String city) {
+        this.city = city;
+    }
 
-	public String getClientSalutation() {
-		return gender.getSalutation();
-	}
+    public void deposit(float x) throws IllegalArgumentException {
+        activeAccount.deposit(x);
+    }
 
-	@Override
-	public boolean equals(Object o) {
-		if (this == o) return true;
-		if (o == null || getClass() != o.getClass()) return false;
+    public void withdraw(float x) throws NotEnoughFundsException {
+        activeAccount.withdraw(x);
+    }
 
-		Client client = (Client) o;
+    public void printReport() {
+        System.out.println("Name : " + this.getClientSalutation() + " " + name);
+        for (Account a : accounts) {
+            System.out.print(a.getAccountName() + " balance: " + a.getBalance() + " ");
+        }
+        System.out.println();
+    }
 
-		if (name != null ? !name.equals(client.name) : client.name != null) return false;
-		return gender == client.gender;
-	}
+    public String getClientSalutation() {
+        return gender.getSalutation();
+    }
 
-	@Override
-	public int hashCode() {
-		int result = name != null ? name.hashCode() : 0;
-		result = 31 * result + (gender != null ? gender.hashCode() : 0);
-		return result;
-	}
+    public void parseFeed(Map<String, String> feed) {
 
-	@Override
-	public String toString() {
-		StringBuilder sb = new StringBuilder()
-				.append(gender)
-				.append(" ")
-				.append(name)
-				.append("\n Initial balance: ")
-				.append(initialBalance)
-				.append("\n Initial overdraft: ")
-				.append(initialOverdraft)
-				.append("\n Active account: ")
-				.append(activeAccount)
-				.append("List of accounts:");
+        String accountType = feed.get("accounttype");
+        Account acc = getAccount(accountType);
 
-		for (Account a:accounts) {
-			sb
-				.append("\n")
-				.append(a);
+        this.setCity(feed.get("city"));
+        String gender = feed.get("gender");
+        if (gender.equals("m")) this.gender = Gender.MALE;
+        if (gender.equals("f")) this.gender = Gender.FEMALE;
 
-		}
+        acc.parseFeed(feed);
 
-		return sb.toString();
-	}
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Client client = (Client) o;
+
+        if (name != null ? !name.equals(client.name) : client.name != null) return false;
+        return gender == client.gender;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = name != null ? name.hashCode() : 0;
+        result = 31 * result + (gender != null ? gender.hashCode() : 0);
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder()
+                .append(gender)
+                .append(" ")
+                .append(name)
+                .append("\n Initial balance: ")
+                .append(initialBalance)
+                .append("\n Initial overdraft: ")
+                .append(initialOverdraft)
+                .append("\n Active account: ")
+                .append(activeAccount)
+                .append("List of accounts:");
+
+        for (Account a : accounts) {
+            sb
+                    .append("\n")
+                    .append(a);
+
+        }
+
+        return sb.toString();
+    }
+
+    public enum Gender {
+        MALE("Mr"), FEMALE("Ms");
+
+        private String prefix;
+
+        Gender(String prefix) {
+            this.prefix = prefix;
+        }
+
+        String getSalutation() {
+            return prefix;
+        }
+
+    }
 }

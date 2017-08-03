@@ -1,8 +1,11 @@
 package com.luxoft.bankapp.model;
 
+import java.util.Map;
+
 public abstract class AbstractAccount implements Account {
 	protected float balance;
 	protected String accountName;
+	protected String accountType;
 
 	@Override
 	public void printReport() {
@@ -51,4 +54,14 @@ public abstract class AbstractAccount implements Account {
     public int decimalValue() {
 	    return Math.round(getBalance());
     }
+
+	@Override
+	public String getAccountType() {
+		return accountType;
+	}
+
+	@Override
+	public void parseFeed(Map<String, String> feed) {
+		this.balance = Float.parseFloat(feed.get("balance"));
+	}
 }
