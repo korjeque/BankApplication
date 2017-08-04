@@ -7,7 +7,7 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.Scanner;
 
-import com.luxoft.bankapp.domain.Client;
+import com.luxoft.bankapp.model.Client;
 
 public class BankClient extends NetBank {
 
